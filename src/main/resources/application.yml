@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/postgres
-    username: postgres
-    password: postgres
+    url: ${DB_URL_17}
+    username: ${DB_USERNAME_17}
+    password: ${DB_PASSWORD_17}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -15,3 +15,17 @@ spring:
     baseline-on-migrate: true
     schemas:
       - beta
+
+  kafka:
+    bootstrap-servers: ${GOOGLE_SERVER}:9093
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      retries: 3  # Количество повторных попыток при сбоях
+    consumer:
+      group-id: my_consumer_v2  # Группа потребителей
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      auto-offset-reset: earliest  # Начинать с самого старого сообщения, если нет сохраненной позиции
+      enable-auto-commit: true  # Автоматическое подтверждение сообщений
+
